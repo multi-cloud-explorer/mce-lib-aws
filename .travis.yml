@@ -15,6 +15,7 @@ before_install:
 
 install:
   - pip install -e .[tests,ci]
+  - pip install -U --pre moto
   - pip freeze
 
 script:
