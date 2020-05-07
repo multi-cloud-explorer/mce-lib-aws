@@ -3,12 +3,12 @@ import boto3
 DEFAULT_ACCOUNT_ID = "803981987763"
 
 
-def setup_networking(session=None, region=None, endpoint_url=None, **kwargs):
+def setup_networking(session=None, region=None, account_id=None, **kwargs):
 
     if session:
-        resource = session.resource('ec2', region_name=region, endpoint_url=endpoint_url, **kwargs)
+        resource = session.resource('ec2', region_name=region, **kwargs)
     else:
-        resource = boto3.resource('ec2', region_name=region, endpoint_url=endpoint_url, **kwargs)
+        resource = boto3.resource('ec2', region_name=region, **kwargs)
 
     vpc = resource.create_vpc(CidrBlock="10.11.0.0/16")
 
@@ -21,7 +21,7 @@ def setup_networking(session=None, region=None, endpoint_url=None, **kwargs):
     return {"vpc": vpc.id, "subnet1": subnet1.id, "subnet2": subnet2.id}
 
 
-def acm_certificate(session=None, region=None, **kwargs):
+def acm_certificate(session=None, region=None, account_id=None, **kwargs):
 
     if session:
         client = session.client('acm', region_name=region, **kwargs)
@@ -48,7 +48,7 @@ def acm_certificate(session=None, region=None, **kwargs):
     return response['CertificateArn']
 
 
-def apigateway_restapi(session=None, region=None, **kwargs):
+def apigateway_restapi(session=None, region=None, account_id=None, **kwargs):
 
     if session:
         client = session.client('apigateway', region_name=region, **kwargs)
@@ -108,7 +108,7 @@ def auto_scaling_group(session=None, region=None, account_id=DEFAULT_ACCOUNT_ID,
     return f'arn:aws:autoscaling:{region}:{account_id}:autoScalingGroup:ca861182-c8f9-4ca7-b1eb-cd35505f5ebb:autoScalingGroupName/my-auto-scaling-group'
 
 
-def cloud_formation_stack(session=None, region=None, **kwargs):
+def cloud_formation_stack(session=None, region=None, account_id=None, **kwargs):
 
     if session:
         client = session.client('cloudformation', region_name=region, **kwargs)
@@ -209,7 +209,7 @@ def ec2_instance(session=None, region=None, account_id=None, **kwargs):
     return arn
 
 
-def ecs_cluster(session=None, region=None, **kwargs):
+def ecs_cluster(session=None, region=None, account_id=None, **kwargs):
 
     if session:
         client = session.client('ecs', region_name=region, **kwargs)
@@ -355,7 +355,7 @@ def redshift_cluster(session=None, region=None, account_id=None, **kwargs):
     return f'arn:aws:redshift:{region}:{account_id}:cluster:mycluster'
 
 
-def s3_bucket_with_tags(session=None, region=None, **kwargs):
+def s3_bucket_with_tags(session=None, region=None, account_id=None, **kwargs):
 
     if session:
         client = session.client('s3', region_name=region, **kwargs)
