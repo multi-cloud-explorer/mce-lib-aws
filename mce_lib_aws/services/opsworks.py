@@ -10,13 +10,14 @@ class Stack(AWSResource):
     """
 
     boto_service_name = 'opsworks'
-    arn_pattern = None
 
     def _listall(self):
         response = self.client.describe_stacks()
+        # TODO: boucler sur Stacks ?
         yield from response['Stacks']
 
     def _parse_arn(self, elem):
+        print('!!! arn3 : ', elem['Arn'], elem)
         return elem['Arn']
 
     def _parse_tags(self, elem, data):

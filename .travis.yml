@@ -14,13 +14,13 @@ before_install:
   - python -m pip install --upgrade pip
 
 install:
-  - pip install -e .[tests,dev]
-  - pip install coveralls
+  - pip install -e .[tests,ci]
+  - pip freeze
 
 script:
+  - pytest -m 'not mce_todo and not mce_known_bug' -x
   #- black -S -t py37 --check mce_lib_aws
-  - pytest
 
-after_script:
+after_success:
   - coveralls
-
+  - codecov

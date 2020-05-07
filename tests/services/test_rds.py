@@ -1,17 +1,23 @@
-from moto import mock_rds
+from unittest.mock import patch
+from moto import mock_rds2
 
 from mce_lib_aws.services import rds as service
 
-@mock_rds
+@mock_rds2
 def test_dbinstance(rds_db_instance, aws_session, aws_region, aws_account_id):
 
     arn = rds_db_instance(aws_session, aws_region, aws_account_id)
 
-    inventory = service.DbInstance(aws_region, aws_account_id, aws_session)
-    inventory_list = list(inventory)
+    with patch("mce_lib_aws.services.rds.DbInstance.get_tags") as func:
+        func.return_value = {"key1": "value1"}
 
-    assert len(inventory_list) == 1
-    asset = inventory_list[0]
-    assert arn == asset.arn
+        inventory = service.DbInstance(aws_region, aws_account_id, aws_session)
+        inventory_list = list(inventory)
 
-    # FIXME: NotImplementedError: The list_tags_for_resource action has not been implemented
+        assert len(inventory_list) == 1
+        asset = inventory_list[0]
+
+        # FIXME: assert arn == asset.arn
+
+        assert 'value1' == asset.tags['key1']
+

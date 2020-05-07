@@ -1,9 +1,13 @@
 import boto3
 import pytest
 
-from moto import mock_iam, mock_sts, mock_apigateway, mock_s3
+from moto import mock_iam, mock_sts
 
 from . import fixtures
+
+def pytest_configure(config):
+    config.addinivalue_line("markers", "mce_known_bug: mark test as known bug")
+    config.addinivalue_line("markers", "mce_todo: mark todo")
 
 @pytest.fixture(scope='function', autouse=True)
 def aws_credentials(monkeypatch):

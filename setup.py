@@ -6,16 +6,20 @@ install_requires = [
     'python-decouple',
     'python-dotenv',
     'requests',
-    'boto3'
+    'boto3',
+
+    'pytest>=5.4.1',  # for mce_lib_aws.pytest.plugin
 ]
 
 tests_requires = [
     'pytest>=5.4.1',
-    'pytest-cov',
-    'pytest-pep8',
     'bandit',
     'flake8',
     'coverage',
+    'pytest-cov',
+    'pytest-pep8',
+    'pytest-flake8',
+    'black',
     'freezegun',
     'moto[server]',
 ]
@@ -24,13 +28,27 @@ dev_requires = [
     'pylint',
     'ipython',
     'autopep8',
-    'black',
-    'wheel',
+    'twine',
+    'wheel'
+]
+
+doc_requires = [
+    'Sphinx>=3.0',
+    'sphinx_rtd_theme',
+    'sphinx-click',
+    'sphinx-autodoc-typehints'
+]
+
+ci_requires = [
+    'coveralls',
+    'codecov',
 ]
 
 extras_requires = {
     'tests': tests_requires,
     'dev': dev_requires,
+    'doc': doc_requires,
+    'ci': ci_requires
 }
 
 here = os.path.abspath(os.path.dirname(__file__))

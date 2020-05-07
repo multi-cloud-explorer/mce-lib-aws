@@ -1,4 +1,3 @@
-import boto3
 from moto import mock_iam, mock_sts, mock_apigateway
 
 from mce_lib_aws.crawler import get_cloud_assets

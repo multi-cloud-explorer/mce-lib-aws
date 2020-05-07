@@ -1,8 +1,10 @@
 import logging
 from collections import namedtuple
 
-logger = logging.getLogger(__name__)
+from boto3.session import Session as BotoSession
+from botocore.client import BaseClient
 
+logger = logging.getLogger(__name__)
 
 Asset = namedtuple('Asset', ('arn', 'data', 'tags', 'name'))
 
@@ -58,16 +60,19 @@ def tags_to_list(tags_dict, nk='Key', nv='Value', addon=None):
 
 
 class AWSResource:
-    boto_service_name = ''
-    arn_pattern = ''
 
-    def __init__(self, region, account, session, client=None):
+    boto_service_name = None
+    arn_pattern = None
+
+    def __init__(self, region: str, account: str, session: BotoSession, client: BaseClient = None, endpoint_url: str = None):
         self.region = region
         self.account = account
-        if not client:
-            self.client = session.client(self.boto_service_name, region_name=region)
-        else:
-            self.client = client
+        self.client = client
+
+        if not self.client:
+            self.client = session.client(
+                self.boto_service_name, region_name=region, endpoint_url=endpoint_url
+            )
 
     def __iter__(self):
         for elem in self._listall():
@@ -75,12 +80,17 @@ class AWSResource:
             data = self._parse_data(elem)
             tags = self._parse_tags(elem, data)
             name = self._parse_name(elem, data, tags)
+
+            # TODO: ???
             if isinstance(elem, (str, list)):
                 elem = {}
+
             if not isinstance(data, dict):
                 logger.error('data should be a dict, not a %s.', type(data))
                 data = {}
+
             data = dict(elem, **data)
+
             yield Asset(arn, data, tags, name)
 
     def _listall(self):

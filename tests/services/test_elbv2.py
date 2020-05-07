@@ -1,11 +1,12 @@
-from moto import mock_elbv2
+from moto import mock_elbv2, mock_ec2
 
 from mce_lib_aws.services import elbv2 as service
 
+@mock_ec2
 @mock_elbv2
-def test_load_balancer(elb_v2, aws_session, aws_region, aws_account_id):
+def test_elbv2_load_balancer(elbv2_load_balancer, aws_session, aws_region, aws_account_id):
 
-    arn = elb_v2(aws_session, aws_region, aws_account_id)
+    arn = elbv2_load_balancer(aws_session, aws_region, aws_account_id)
 
     inventory = service.Loadbalancer(aws_region, aws_account_id, aws_session)
     inventory_list = list(inventory)

@@ -144,13 +144,13 @@ def dynamodb_table(session=None, region=None, account_id=None, **kwargs):
         client = boto3.client('dynamodb', region_name=region, **kwargs)
 
     response = client.create_table(
-        TableName='my-table',
         AttributeDefinitions=[
             {
                 'AttributeName': 'my-key',
                 'AttributeType': 'S'
             }
         ],
+        TableName='my-table',
         KeySchema=[
             {
                 'AttributeName': 'my-key',
@@ -186,8 +186,8 @@ def ec2_instance(session=None, region=None, account_id=None, **kwargs):
         client = boto3.client('ec2', region_name=region, **kwargs)
 
     response = client.run_instances(
-        MinCount=2,
-        MaxCount=2,
+        MinCount=1,
+        MaxCount=1,
         InstanceType='m4.large'
     )
 
@@ -261,10 +261,12 @@ def elbv2_load_balancer(session=None, region=None, account_id=None, **kwargs):
 
     if session:
         client = session.client('elbv2', region_name=region, **kwargs)
+        ec2_client = session.client('ec2', region_name=region, **kwargs)
     else:
         client = boto3.client('elbv2', region_name=region, **kwargs)
+        ec2_client = boto3.client('ec2', region_name=region, **kwargs)
 
-    response = client.describe_subnets()
+    response = ec2_client.describe_subnets()
     subnet_id = response['Subnets'][0]['SubnetId']
 
     response = client.create_load_balancer(
@@ -295,12 +297,12 @@ def opsworks_stack(session=None, region=None, account_id=None, **kwargs):
         Name='my-stack',
         Region=region,
         ServiceRoleArn=f'arn:aws:iam::{account_id}:role/aws-opsworks-service-role',
-        DefaultInstanceProfileArn=f'arn:aws:iam::{account_id}:instance-profile/aws-opsworks-ec2-role'
+        DefaultInstanceProfileArn=f'arn:aws:iam::{account_id}:instance-profile/aws-opsworks-ec2-role',
     )
 
     stack_id = response['StackId']
 
-    return f'arn:aws:opsworks:{region}:{account_id}:stack/{stack_id}/'
+    return f'arn:aws:opsworks:{region}:{account_id}:stack/{stack_id}'
 
 
 def rds_db_instance(session=None, region=None, account_id=None, **kwargs):

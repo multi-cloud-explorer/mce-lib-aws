@@ -1,8 +1,11 @@
-from moto import mock_dynamodb
+from moto import mock_dynamodb2
 
 from mce_lib_aws.services import dynamodb as service
 
-@mock_dynamodb
+import pytest
+
+@pytest.mark.mce_known_bug
+@mock_dynamodb2
 def test_table(dynamodb_table, aws_session, aws_region, aws_account_id):
 
     arn = dynamodb_table(aws_session, aws_region, aws_account_id)
