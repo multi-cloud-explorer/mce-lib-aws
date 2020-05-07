@@ -1,0 +1,11 @@
+{
+  "name": "aws-simple-http-endpoint",
+  "version": "1.0.0",
+  "description": "Example demonstrates how to setup a simple HTTP GET endpoint with python",
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "serverless-localstack": "^0.4.24",
+    "serverless-python-requirements": "^5.1.0"
+  }
+}

@@ -1,0 +1,63 @@
+service: inventory-aws
+
+#frameworkVersion: ">=1.2.0 <2.0.0"
+
+provider:
+  name: aws
+  runtime: python3.7
+  #stage: ${opt:stage, self:custom.defaultStage}
+#  stage: ${opt:stage, 'dev'}
+#  region: ${opt:region, 'eu-west-3'}
+#  logRetentionInDays: 7
+#  environment:
+#    QUEUE_URL: https://sqs.eu-west-1.amazonaws.com/718738067010/inventory-${self:provider.stage}.fifo
+#    DLQ_URL: https://sqs.eu-west-1.amazonaws.com/718738067010/inventory-${self:provider.stage}-dlq.fifo
+#    QUEUE_REGION: eu-west-1
+#    DYNAMODB_TABLE: inventory-${self:provider.stage}
+#    TZ: UTC
+#  iamRoleStatements:
+#    -  Effect: "Allow"
+#       Action:
+#         - "sts:AssumeRole"
+#       Resource: "*"
+#    -  Effect: "Allow"
+#       Action:
+#         - "dynamodb:*"
+#       Resource:
+#         - Fn::Join:
+#           - ":"
+#           - - "arn:aws:dynamodb"
+#             - Ref: "AWS::Region"
+#             - Ref: "AWS::AccountId"
+#             - "table/inventory-${self:provider.stage}"
+#    -  Effect: "Allow"
+#       Action:
+#         - "sqs:*"
+#       Resource: "arn:aws:sqs:eu-west-1:718738067010:inventory-${self:provider.stage}.fifo"
+
+plugins:
+  - serverless-localstack
+  #- serverless-python-requirements
+
+custom:
+  defaultStage: local
+  localstack:
+    debug: true
+    stages:
+      - local
+    #host: http://localhost
+    endpointFile: localstack_endpoints.json
+    #autostart: false
+#    lambda:
+#      mountCode: True
+#  pythonRequirements:
+#    dockerizePip: non-linux
+#    pythonBin: python3
+
+functions:
+  currentTime:
+    handler: handler.endpoint
+    events:
+      - http:
+          path: ping
+          method: get
