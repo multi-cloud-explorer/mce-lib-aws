@@ -71,7 +71,9 @@ class AWSResource:
 
         if not self.client:
             self.client = session.client(
-                self.boto_service_name, region_name=region, endpoint_url=endpoint_url
+                self.boto_service_name,
+                region_name=region,
+                endpoint_url=endpoint_url
             )
 
     def __iter__(self):

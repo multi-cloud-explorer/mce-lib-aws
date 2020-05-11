@@ -17,7 +17,6 @@ class Stack(AWSResource):
         yield from response['Stacks']
 
     def _parse_arn(self, elem):
-        print('!!! arn3 : ', elem['Arn'], elem)
         return elem['Arn']
 
     def _parse_tags(self, elem, data):

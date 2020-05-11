@@ -19,7 +19,6 @@ class Bucket(AWSResource):
 
         response = self.client.list_buckets()
         for bucket in response['Buckets']:
-            print('!!! bucket : ', bucket)
             bucket_name = bucket['Name']
 
             if cls._cache_locations.get(bucket_name):
