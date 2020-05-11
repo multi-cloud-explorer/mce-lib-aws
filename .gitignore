@@ -1,3 +1,4 @@
+private_scripts/
 node_modules/
 .terraform/
 .serverless/
