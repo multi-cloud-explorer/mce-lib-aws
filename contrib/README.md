@@ -1,8 +1,10 @@
-# Quelques exemples pour utiliser mce-lib-aws
+# Quelques exemples pour exploiter mce-lib-aws
 
 En cours de mise au point...
 
 ## Localstack
+
+- Exécution d'un localstack local
 
 ```shell
 docker run -d --name localstack-us-east-1 \
@@ -22,6 +24,15 @@ docker run --rm -it -e SERVICES=sqs,sts,ec2,iam,secretsmanager,acm -p 45660:4566
 
 ```
 
+## contrib/python
 
+- Alimentation de localstack à partir des fixtures python livrés avec mce-lib-aws
 
-  
+## contrib/terraform
+
+- Alimentation de localstack à partir de templates Terraform
+
+## contrib/serverless
+
+- Publication d'une fonction lambda, utilisant mce-lib-aws pour gérér les évènements d'inventaires (création/modification/suppression de ressources)
+

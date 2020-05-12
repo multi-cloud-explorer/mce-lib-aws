@@ -1,9 +1,11 @@
-from ..common import AWSResource, Asset, tags_to_dict, tags_to_list
+from mce_lib_aws.utils import tags_to_dict, tags_to_list
+from mce_lib_aws.common import AWSResource
 
 
 class Certificate(AWSResource):
     """
     Required IAM actions:
+    - acm:ListCertificates
     - acm:AddTagsToCertificate
     - acm:RemoveTagsFromCertificate
     """

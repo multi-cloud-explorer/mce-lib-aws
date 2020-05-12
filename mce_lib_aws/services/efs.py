@@ -1,11 +1,11 @@
-from ..common import AWSResource, Asset, tags_to_dict, tags_to_list
+from mce_lib_aws.utils import tags_to_dict, tags_to_list
+from mce_lib_aws.common import AWSResource
 
 
 class Filesystem(AWSResource):
     """
     Required IAM actions:
-    - elasticfilesystem:CreateTags
-    - elasticfilesystem:DeleteTags
+    - elasticfilesystem:DescribeFileSystems
     """
 
     boto_service_name = 'efs'

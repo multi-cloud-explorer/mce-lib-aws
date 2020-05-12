@@ -1,15 +1,16 @@
-from ..common import AWSResource, Asset, tags_to_dict, tags_to_list
+from mce_lib_aws.utils import tags_to_dict, tags_to_list
+from mce_lib_aws.common import AWSResource
 
 
 class Table(AWSResource):
     """
     Required IAM actions:
-    - dynamodb:TagResource
-    - dynamodb:UntagResource
+    - dynamodb:ListTables
     """
 
     boto_service_name = 'dynamodb'
     arn_pattern = 'arn:aws:dynamodb:{region}:{account}:table/{elem}'
+    #  "TableArn": "arn:aws:dynamodb:eu-central-1:123456789123:table/url-shortener-mappingtable00000000-00H0WLIR000H",
 
     def _listall(self):
         paginator = self.client.get_paginator('list_tables')

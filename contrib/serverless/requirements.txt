@@ -1,3 +1,4 @@
 PyYAML
-dynamodb-json
 python-decouple
+boto3
+git+https://github.com/multi-cloud-explorer/mce-lib-aws.git

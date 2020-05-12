@@ -1,3 +1,4 @@
+
 from .services import (
     acm,
     autoscaling,
@@ -25,7 +26,7 @@ from .services import (
 )
 
 
-_AVAILABLES_RESOURCES = {
+SERVICES = {
     'aws.acm.certificate': acm.Certificate,
     'aws.apigateway.restapis': apigateway.RestApi,
     'aws.autoscaling.autoScalingGroup': autoscaling.AutoScalingGroup,

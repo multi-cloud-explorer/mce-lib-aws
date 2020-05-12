@@ -7,6 +7,7 @@ install_requires = [
     'python-dotenv',
     'requests',
     'boto3',
+    'click',
 
     'pytest>=5.4.1',  # for mce_lib_aws.pytest.plugin
 ]
@@ -48,7 +49,11 @@ extras_requires = {
     'tests': tests_requires,
     'dev': dev_requires,
     'doc': doc_requires,
-    'ci': ci_requires
+    'ci': ci_requires,
+    'gevent': [
+        'gevent',
+        'gevent-openssl',
+    ]
 }
 
 here = os.path.abspath(os.path.dirname(__file__))
@@ -82,8 +87,8 @@ setup(
         'Programming Language :: Python :: 3.7',
     ],
     entry_points={
-        #'console_scripts': [
-        #    'mce-aws = mce_aws.core:main',
-        #],
+        'console_scripts': [
+            'mce-aws = mce_lib_aws.cli:main',
+        ],
     }
 )

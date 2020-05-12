@@ -4,60 +4,11 @@ from collections import namedtuple
 from boto3.session import Session as BotoSession
 from botocore.client import BaseClient
 
+from .utils import tags_to_dict, tags_to_list
+
 logger = logging.getLogger(__name__)
 
-Asset = namedtuple('Asset', ('arn', 'data', 'tags', 'name'))
-
-
-def tags_to_dict(tags_list, nk='Key', nv='Value'):
-    """
-    Maps a list of dicts to a flat dict.
-    From :
-        [
-          {'Key': 'tag1', 'Value': 'value1'},
-          {'Key': 'tag2', 'Value': 'value2'},
-          ...
-        ]
-    To :
-        {
-            'tag1': 'value1',
-            'tag2': 'value2',
-            ...
-        }
-
-    If defined, addon is an additionnal dict to extend each items
-    """
-
-    tags_dict = dict((i[nk], i[nv]) for i in tags_list)
-    return tags_dict
-
-
-def tags_to_list(tags_dict, nk='Key', nv='Value', addon=None):
-    """
-    Maps a flat dict to a list of dicts.
-    From :
-        {
-            'tag1': 'value1',
-            'tag2': 'value2',
-            ...
-        }
-    To :
-        [
-          {'Key': 'tag1', 'Value': 'value1'},
-          {'Key': 'tag2', 'Value': 'value2'},
-          ...
-        ]
-
-    If defined, addon is an additionnal dict to extend each items
-    """
-
-    if addon:
-        tags_list = list(dict(**{nk: k, nv: v}, **addon)
-                         for k, v in tags_dict.items())
-    else:
-        tags_list = list(dict(**{nk: k, nv: v}) for k, v in tags_dict.items())
-    return tags_list
-
+Asset = namedtuple('Asset', ('arn', 'data', 'tags', 'name', 'account_id', 'region', 'service'))
 
 class AWSResource:
 
@@ -93,7 +44,15 @@ class AWSResource:
 
             data = dict(elem, **data)
 
-            yield Asset(arn, data, tags, name)
+            yield Asset(
+                arn=arn,
+                data=data,
+                tags=tags,
+                name=name,
+                account_id=self.account,
+                region=self.region,
+                service=None)
+
 
     def _listall(self):
         """Enumerates all assets with a one API call, an returns a list"""

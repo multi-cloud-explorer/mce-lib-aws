@@ -1,15 +1,18 @@
-from ..common import AWSResource, Asset, tags_to_dict, tags_to_list
+from mce_lib_aws.utils import tags_to_dict, tags_to_list
+from mce_lib_aws.common import AWSResource
 
 
 class DbInstance(AWSResource):
     """
     Required IAM actions:
+    - rds:DescribeDBInstances
     - rds:AddTagsToResource
     - rds:RemoveTagsFromResource
     """
 
     boto_service_name = 'rds'
     arn_pattern = 'arn:aws:rds:{region}:{account}:db:{elem[DBInstanceIdentifier]}'
+    # "DBInstanceArn": "arn:aws:rds:us-west-2:123456789123:db:xxxxxxxx",
 
     def _listall(self):
         paginator = self.client.get_paginator('describe_db_instances')

@@ -1,7 +1,6 @@
 import boto3
 
-DEFAULT_ACCOUNT_ID = "803981987763"
-
+DEFAULT_ACCOUNT_ID = "123456789001"
 
 def setup_networking(session=None, region=None, account_id=None, **kwargs):
 
